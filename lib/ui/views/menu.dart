@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supermercado_flutter/ui/views/cliente/readCliente.dart';
+import 'package:supermercado_flutter/ui/views/usuario/readUsuario.dart';
 
 class PageMenu extends StatefulWidget {
   @override
@@ -23,10 +24,10 @@ class _PageMenuState extends State<PageMenu> {
           ),
           Divider(),
           new ListTile(
-            title: new Text('Inventario'),
+            title: new Text('Usuario'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => ReadCliente()));
+                  context, MaterialPageRoute(builder: (_) => ReadUsuario()));
             },
           ),
           new ListTile(
