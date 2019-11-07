@@ -1,50 +1,222 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:supermercado_flutter/core/models/productModel.dart';
-import 'package:supermercado_flutter/core/viewmodels/CRUDModel.dart';
-import 'package:supermercado_flutter/ui/widgets/productCard.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:supermercado_flutter/ui/views/cliente/readCliente.dart';
+import 'package:supermercado_flutter/ui/views/menu.dart';
 
 class HomeView extends StatefulWidget {
   @override
-  _HomeViewState createState() => _HomeViewState();
+  HomeViewState createState() => HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  List<Product> products;
+class HomeViewState extends State<HomeView>
+    with SingleTickerProviderStateMixin {
+  final TextEditingController email_controller = new TextEditingController();
+  final TextEditingController password_controller = new TextEditingController();
+  String _nombre;
+  String _contr;
+  String _mensaje;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<CRUDModel>(context);
+    return new Scaffold(
+      resizeToAvoidBottomPadding: true,
+        body:
+        new ListView(
+          shrinkWrap: true,
+          reverse: false,
+          children: <Widget>[
+            new SizedBox(height: 20.0,),
+          new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new SizedBox(height: 50.0,),
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/addProduct');
-        },
-        child: Icon(Icons.add),
-      ),
-      appBar: AppBar(
-        title: Center(child: Text('Home')),
-      ),
-      body: Container(
-        child: StreamBuilder(
-            stream: productProvider.fetchProductsAsStream(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasData) {
-                products = snapshot.data.documents
-                    .map((doc) => Product.fromMap(doc.data, doc.documentID))
-                    .toList();
-                return ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (buildContext, index) =>
-                      ProductCard(productDetails: products[index]),
-                );
-              } else {
-                return Text('fetching');
-              }
-            }),
-      ),
-    );
+              new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Image.asset(
+                    'assets/keke.png',
+                    height: 200.0,
+                    width: 210.0,
+                    fit: BoxFit.scaleDown,
+                  )
+                ],
+              ),
+              new Center(
+                  child: new Center(
+                    child: new Stack(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                            child: new Form(
+                              autovalidate: false,
+                              child: new Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                                    child: new TextFormField( 
+                                      controller: email_controller,
+                                      autofocus: false,
+
+                                      decoration: new InputDecoration(
+                                          labelText: "Nombre de Usuario",
+                                          
+                                          prefixIcon: Padding(padding: EdgeInsets.only(right: 7.0),child:new Image.asset(
+                                            'assets/user_icon.png',
+                                            height: 25.0,
+                                            width: 25.0,
+                                            fit: BoxFit.scaleDown,
+                                            color: Color(0xff395c6b),
+                                          )),
+                                          ),
+                                      onChanged: (text) {
+                                        _nombre = text;
+                                        print(_nombre);
+                                      },
+                                      keyboardType: TextInputType.emailAddress,
+                                    ),
+                                  ),
+                                  new Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, right: 10.0, top: 5.0),
+                                      child: new TextFormField(
+                                        obscureText: true,
+                                        autofocus: false,
+                                        controller: password_controller,
+                                        decoration: new InputDecoration(
+
+                                            labelText: "Contraseña",
+
+                                            prefixIcon: Padding(padding: EdgeInsets.only(right: 7.0),child: new Image.asset(
+                                              'assets/password_icon.png',
+                                              height: 25.0,
+                                              width: 25.0,
+                                              fit: BoxFit.scaleDown,
+                                              color: Color(0xff395c6b),
+                                            ))),
+                                        onChanged: (text) {
+                                          _contr = text;
+                                          print(_contr);
+                                        },
+                                        keyboardType: TextInputType.text,
+                                      )),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 0.0, top: 45.0, bottom: 20.0),
+                                    child: new RaisedButton(
+                                      shape: new RoundedRectangleBorder(
+                                          borderRadius:
+                                          new BorderRadius.circular(30.0)),
+                                      onPressed: () {
+                                        if (!(email_controller.value.text
+                                            .trim()
+                                            .toString()
+                                            .length >
+                                            1)) {
+                                          Fluttertoast.showToast(
+                                              msg: "Ingrese Nombre de Usuario.",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIos: 1);
+                                        } else if (!(password_controller.value.text
+                                            .trim()
+                                            .toString()
+                                            .length >
+                                            1)) {
+                                          Fluttertoast.showToast(
+                                              msg: "Ingrese la contraseña.",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIos: 1);
+                                        } else {
+                                          if (_nombre == "111" &&
+                                              _contr == "111") {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ReadCliente()
+                                              ),
+                                            );
+                                          }
+                                          else {
+                                            if (_nombre == "222" &&
+                                                _contr == "222") {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PageMenu()
+                                                ),
+                                              );
+                                            }
+                                            else {
+                                              if (_nombre == "ventas" &&
+                                                  _contr == "ventas") {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ReadCliente()
+                                                  ),
+                                                );
+                                              }
+                                              else {
+                                                Fluttertoast.showToast(
+                                                    msg: "No existe ese usuario",
+                                                    toastLength: Toast
+                                                        .LENGTH_SHORT,
+                                                    gravity: ToastGravity
+                                                        .CENTER,
+                                                    timeInSecForIos: 1);
+                                              }
+                                            }
+                                          }
+                                        }
+
+                                      },
+                                      child: new Text(
+                                        "Login",
+                                        style: new TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      color: Color(0xff2c363f),
+                                      textColor: Colors.white,
+                                      elevation: 5.0,
+                                      padding: EdgeInsets.only(
+                                          left: 80.0,
+                                          right: 80.0,
+                                          top: 15.0,
+                                          bottom: 15.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
+                    ),
+                  ))
+            ],
+          )
+
+        ],)
+       );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is disposed
+
+    super.dispose();
+    email_controller.dispose();
+    password_controller.dispose();
   }
 }

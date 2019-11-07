@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import './views/addProduct.dart';
-import './views/productDetails.dart';
-import './views/homeView.dart';
+import 'package:supermercado_flutter/ui/views/cliente/addCliente.dart';
+import 'package:supermercado_flutter/ui/views/cliente/clienteDetails.dart';
+import 'package:supermercado_flutter/ui/views/cliente/readCliente.dart';
+import 'package:supermercado_flutter/ui/views/homeView.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -11,13 +12,17 @@ class Router {
         return  MaterialPageRoute(
           builder: (_)=> HomeView()
         );
-      case '/addProduct' :
+      case '/readCliente' :
+        return  MaterialPageRoute(
+          builder: (_)=> ReadCliente()
+        );
+      case '/addCliente' :
         return MaterialPageRoute(
-          builder: (_)=> AddProduct()
+          builder: (_)=> AddCliente()
         ) ;
-      case '/productDetails' :
+      case '/clienteDetails' :
         return MaterialPageRoute(
-            builder: (_)=> ProductDetails()
+            builder: (_)=> ClienteDetails()
         ) ;
       default:
         return MaterialPageRoute(
