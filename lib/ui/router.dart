@@ -19,6 +19,9 @@ import 'package:supermercado_flutter/ui/views/proveedor/readProveedor.dart';
 import 'package:supermercado_flutter/ui/views/usuario/addUsuario.dart';
 import 'package:supermercado_flutter/ui/views/usuario/usuarioDetails.dart';
 import 'package:supermercado_flutter/ui/views/usuario/readUsuario.dart';
+import 'package:supermercado_flutter/ui/views/ventas/addVentas.dart';
+import 'package:supermercado_flutter/ui/views/ventas/readVentas.dart';
+import 'package:supermercado_flutter/ui/views/ventas/ventasDetails.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -98,6 +101,18 @@ class Router {
       case '/inventarioDetails' :
         return MaterialPageRoute(
             builder: (_)=> InventarioDetails()
+        ) ;
+      case '/readVentas' :
+        return  MaterialPageRoute(
+            builder: (_)=> ReadVentas()
+        );
+      case '/addVentas' :
+        return MaterialPageRoute(
+            builder: (_)=> AddVentas()
+        ) ;
+      case '/ventasDetails' :
+        return MaterialPageRoute(
+            builder: (_)=> VentasDetails()
         ) ;
       default:
         return MaterialPageRoute(

@@ -5,6 +5,7 @@ import 'package:supermercado_flutter/ui/views/inventario/readInventario.dart';
 import 'package:supermercado_flutter/ui/views/producto/readProducto.dart';
 import 'package:supermercado_flutter/ui/views/proveedor/readProveedor.dart';
 import 'package:supermercado_flutter/ui/views/usuario/readUsuario.dart';
+import 'package:supermercado_flutter/ui/views/ventas/readVentas.dart';
 
 class PageMenu extends StatefulWidget {
   @override
@@ -67,6 +68,13 @@ class _PageMenuState extends State<PageMenu> {
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => ReadBodega()));
+            },
+          ),
+          new ListTile(
+            title: new Text('Ventas'),
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ReadVentas()));
             },
           ),
         ],
