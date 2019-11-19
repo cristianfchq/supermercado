@@ -1,38 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:supermercado_flutter/core/models/clienteModel.dart';
-import 'package:supermercado_flutter/core/viewmodels/CRUDModelCliente.dart';
+import 'package:supermercado_flutter/core/models/proveedorModel.dart';
 import 'package:provider/provider.dart';
+import 'package:supermercado_flutter/core/viewmodels/CRUDModelProveedor.dart';
 
-class ModifyCliente extends StatefulWidget {
-  final Cliente product;
-
-  ModifyCliente({@required this.product});
-
+class AddProveedor extends StatefulWidget {
   @override
-  _ModifyClienteState createState() => _ModifyClienteState();
+  _AddProveedorState createState() => _AddProveedorState();
 }
 
-class _ModifyClienteState extends State<ModifyCliente> {
+class _AddProveedorState extends State<AddProveedor> {
   final _formKey = GlobalKey<FormState>();
 
-  String nombreCliente;
-  String apellidoCliente;
-  String cedula;
-  String direccion;
-  String telefono;
+  String nombreProveedor;
+  String rucProveedor;
+  String direccionProveedor;
+  String nomContactoProveedor;
+  String telefonoProveedor;
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<CRUDModelCliente>(context);
+    var productProvider = Provider.of<CRUDModelProveedor>(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Modificar cliente'),
+          title: Text('Añadir Proveedor'),
           backgroundColor: Color(0xff2c363f),
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(8),
             child: Form(
               key: _formKey,
               child: Column(
@@ -48,36 +44,6 @@ class _ModifyClienteState extends State<ModifyCliente> {
                               children: <Widget>[
                                 Text("Nombre"),
                                 TextFormField(
-                                    initialValue: widget.product.nombreCliente,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Colors.grey[300],
-                                      filled: true,
-                                    ),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'El campo debe estar llenado';
-                                      }
-                                    },
-                                    onSaved: (value) => nombreCliente = value),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Apellido"),
-                                TextFormField(
-                                    initialValue:
-                                        widget.product.apellidoCliente,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -89,7 +55,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                       }
                                     },
                                     onSaved: (value) =>
-                                        apellidoCliente = value),
+                                        nombreProveedor = value),
                               ],
                             ),
                           )),
@@ -104,9 +70,10 @@ class _ModifyClienteState extends State<ModifyCliente> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Cedula"),
+                                Text("RUC"),
                                 TextFormField(
-                                    initialValue: widget.product.cedula,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -117,7 +84,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => cedula = value),
+                                    onSaved: (value) => rucProveedor = value),
                               ],
                             ),
                           )),
@@ -134,7 +101,6 @@ class _ModifyClienteState extends State<ModifyCliente> {
                               children: <Widget>[
                                 Text("Direccion"),
                                 TextFormField(
-                                    initialValue: widget.product.direccion,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -145,7 +111,36 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => direccion = value),
+                                    onSaved: (value) =>
+                                        direccionProveedor = value),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Nombre de contacto"),
+                                TextFormField(
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Colors.grey[300],
+                                      filled: true,
+                                    ),
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'El campo debe estar llenado';
+                                      }
+                                    },
+                                    onSaved: (value) =>
+                                        nomContactoProveedor = value),
                               ],
                             ),
                           )),
@@ -164,8 +159,6 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                 TextFormField(
                                     keyboardType:
                                         TextInputType.numberWithOptions(),
-                                    initialValue:
-                                        widget.product.telefono.toString(),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -176,7 +169,8 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => telefono = value),
+                                    onSaved: (value) =>
+                                        telefonoProveedor = value),
                               ],
                             ),
                           )),
@@ -187,21 +181,19 @@ class _ModifyClienteState extends State<ModifyCliente> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        await productProvider.updateProduct(
-                            Cliente(
-                                nombreCliente: nombreCliente,
-                                apellidoCliente: apellidoCliente,
-                                cedula: cedula,
-                                direccion: direccion,
-                                telefono: int.parse(telefono)),
-                            widget.product.id);
+                        await productProvider.addProduct(Proveedor(
+                            nombreProveedor: nombreProveedor,
+                            rucProveedor: int.parse(rucProveedor),
+                            direccionProveedor: direccionProveedor,
+                            nomContactoProveedor: nomContactoProveedor,
+                            telefonoProveedor: int.parse(telefonoProveedor)));
                         Navigator.pop(context);
                       }
                     },
-                    child: Text('Modificar',
+                    child: Text('Registrar',
                         style: TextStyle(color: Colors.white)),
                     color: Color(0xff2c363f),
-                  )
+                  ),
                 ],
               ),
             ),

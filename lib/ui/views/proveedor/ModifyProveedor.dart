@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:supermercado_flutter/core/models/clienteModel.dart';
-import 'package:supermercado_flutter/core/viewmodels/CRUDModelCliente.dart';
+import 'package:supermercado_flutter/core/models/proveedorModel.dart';
+import 'package:supermercado_flutter/core/viewmodels/CRUDModelProveedor.dart';
 import 'package:provider/provider.dart';
 
-class ModifyCliente extends StatefulWidget {
-  final Cliente product;
+class ModifyProveedor extends StatefulWidget {
+  final Proveedor product;
 
-  ModifyCliente({@required this.product});
+  ModifyProveedor({@required this.product});
 
   @override
-  _ModifyClienteState createState() => _ModifyClienteState();
+  _ModifyProveedorState createState() => _ModifyProveedorState();
 }
 
-class _ModifyClienteState extends State<ModifyCliente> {
+class _ModifyProveedorState extends State<ModifyProveedor> {
   final _formKey = GlobalKey<FormState>();
 
-  String nombreCliente;
-  String apellidoCliente;
-  String cedula;
-  String direccion;
-  String telefono;
+  String nombreProveedor;
+  String rucProveedor;
+  String direccionProveedor;
+  String nomContactoProveedor;
+  String telefonoProveedor;
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<CRUDModelCliente>(context);
+    final productProvider = Provider.of<CRUDModelProveedor>(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Modificar cliente'),
+          title: Text('Modificar Proveedor'),
           backgroundColor: Color(0xff2c363f),
         ),
         body: SingleChildScrollView(
@@ -48,36 +48,8 @@ class _ModifyClienteState extends State<ModifyCliente> {
                               children: <Widget>[
                                 Text("Nombre"),
                                 TextFormField(
-                                    initialValue: widget.product.nombreCliente,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Colors.grey[300],
-                                      filled: true,
-                                    ),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'El campo debe estar llenado';
-                                      }
-                                    },
-                                    onSaved: (value) => nombreCliente = value),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Apellido"),
-                                TextFormField(
                                     initialValue:
-                                        widget.product.apellidoCliente,
+                                        widget.product.nombreProveedor,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -89,7 +61,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                       }
                                     },
                                     onSaved: (value) =>
-                                        apellidoCliente = value),
+                                        nombreProveedor = value),
                               ],
                             ),
                           )),
@@ -104,9 +76,12 @@ class _ModifyClienteState extends State<ModifyCliente> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Cedula"),
+                                Text("RUC"),
                                 TextFormField(
-                                    initialValue: widget.product.cedula,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(),
+                                    initialValue:
+                                        widget.product.rucProveedor.toString(),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -117,7 +92,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => cedula = value),
+                                    onSaved: (value) => rucProveedor = value),
                               ],
                             ),
                           )),
@@ -134,7 +109,8 @@ class _ModifyClienteState extends State<ModifyCliente> {
                               children: <Widget>[
                                 Text("Direccion"),
                                 TextFormField(
-                                    initialValue: widget.product.direccion,
+                                    initialValue:
+                                        widget.product.direccionProveedor,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -145,7 +121,38 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => direccion = value),
+                                    onSaved: (value) =>
+                                        direccionProveedor = value),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text("Nombre de Contacto"),
+                                TextFormField(
+                                    initialValue:
+                                        widget.product.nomContactoProveedor,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      fillColor: Colors.grey[300],
+                                      filled: true,
+                                    ),
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'El campo debe estar llenado';
+                                      }
+                                    },
+                                    onSaved: (value) =>
+                                        nomContactoProveedor = value),
                               ],
                             ),
                           )),
@@ -164,8 +171,9 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                 TextFormField(
                                     keyboardType:
                                         TextInputType.numberWithOptions(),
-                                    initialValue:
-                                        widget.product.telefono.toString(),
+                                    initialValue: widget
+                                        .product.telefonoProveedor
+                                        .toString(),
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -176,7 +184,8 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => telefono = value),
+                                    onSaved: (value) =>
+                                        telefonoProveedor = value),
                               ],
                             ),
                           )),
@@ -188,12 +197,13 @@ class _ModifyClienteState extends State<ModifyCliente> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         await productProvider.updateProduct(
-                            Cliente(
-                                nombreCliente: nombreCliente,
-                                apellidoCliente: apellidoCliente,
-                                cedula: cedula,
-                                direccion: direccion,
-                                telefono: int.parse(telefono)),
+                            Proveedor(
+                                nombreProveedor: nombreProveedor,
+                                rucProveedor: int.parse(rucProveedor),
+                                direccionProveedor: direccionProveedor,
+                                nomContactoProveedor: nomContactoProveedor,
+                                telefonoProveedor:
+                                    int.parse(telefonoProveedor)),
                             widget.product.id);
                         Navigator.pop(context);
                       }

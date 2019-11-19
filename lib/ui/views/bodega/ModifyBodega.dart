@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:supermercado_flutter/core/models/clienteModel.dart';
-import 'package:supermercado_flutter/core/viewmodels/CRUDModelCliente.dart';
+import 'package:supermercado_flutter/core/models/bodegaModel.dart';
+import 'package:supermercado_flutter/core/viewmodels/CRUDModelBodega.dart';
 import 'package:provider/provider.dart';
 
-class ModifyCliente extends StatefulWidget {
-  final Cliente product;
+class ModifyBodega extends StatefulWidget {
+  final Bodega product;
 
-  ModifyCliente({@required this.product});
+  ModifyBodega({@required this.product});
 
   @override
-  _ModifyClienteState createState() => _ModifyClienteState();
+  _ModifyBodegaState createState() => _ModifyBodegaState();
 }
 
-class _ModifyClienteState extends State<ModifyCliente> {
+class _ModifyBodegaState extends State<ModifyBodega> {
   final _formKey = GlobalKey<FormState>();
 
-  String nombreCliente;
-  String apellidoCliente;
-  String cedula;
-  String direccion;
-  String telefono;
+  String nombreBodega;
+  String ubicacionBodega;
+  String descripcionBodega;
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<CRUDModelCliente>(context);
+    final productProvider = Provider.of<CRUDModelBodega>(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Modificar cliente'),
+          title: Text('Modificar bodega'),
           backgroundColor: Color(0xff2c363f),
         ),
         body: SingleChildScrollView(
@@ -48,7 +46,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                               children: <Widget>[
                                 Text("Nombre"),
                                 TextFormField(
-                                    initialValue: widget.product.nombreCliente,
+                                    initialValue: widget.product.nombreBodega,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -59,7 +57,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => nombreCliente = value),
+                                    onSaved: (value) => nombreBodega = value),
                               ],
                             ),
                           )),
@@ -74,10 +72,10 @@ class _ModifyClienteState extends State<ModifyCliente> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Apellido"),
+                                Text("Ubicacion"),
                                 TextFormField(
                                     initialValue:
-                                        widget.product.apellidoCliente,
+                                        widget.product.ubicacionBodega,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -89,7 +87,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                       }
                                     },
                                     onSaved: (value) =>
-                                        apellidoCliente = value),
+                                        ubicacionBodega = value),
                               ],
                             ),
                           )),
@@ -104,9 +102,9 @@ class _ModifyClienteState extends State<ModifyCliente> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Cedula"),
+                                Text("Descripcion"),
                                 TextFormField(
-                                    initialValue: widget.product.cedula,
+                                    initialValue: widget.product.descripcionBodega,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       fillColor: Colors.grey[300],
@@ -117,66 +115,7 @@ class _ModifyClienteState extends State<ModifyCliente> {
                                         return 'El campo debe estar llenado';
                                       }
                                     },
-                                    onSaved: (value) => cedula = value),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Direccion"),
-                                TextFormField(
-                                    initialValue: widget.product.direccion,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Colors.grey[300],
-                                      filled: true,
-                                    ),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'El campo debe estar llenado';
-                                      }
-                                    },
-                                    onSaved: (value) => direccion = value),
-                              ],
-                            ),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Telefono"),
-                                TextFormField(
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(),
-                                    initialValue:
-                                        widget.product.telefono.toString(),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Colors.grey[300],
-                                      filled: true,
-                                    ),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'El campo debe estar llenado';
-                                      }
-                                    },
-                                    onSaved: (value) => telefono = value),
+                                    onSaved: (value) => descripcionBodega = value),
                               ],
                             ),
                           )),
@@ -188,12 +127,10 @@ class _ModifyClienteState extends State<ModifyCliente> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         await productProvider.updateProduct(
-                            Cliente(
-                                nombreCliente: nombreCliente,
-                                apellidoCliente: apellidoCliente,
-                                cedula: cedula,
-                                direccion: direccion,
-                                telefono: int.parse(telefono)),
+                            Bodega(
+                            nombreBodega: nombreBodega,
+                            ubicacionBodega: ubicacionBodega,
+                            descripcionBodega: descripcionBodega),
                             widget.product.id);
                         Navigator.pop(context);
                       }
