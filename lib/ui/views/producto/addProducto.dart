@@ -4,7 +4,7 @@ import 'package:supermercado_flutter/core/models/productoModel.dart';
 import 'package:provider/provider.dart';
 import 'package:supermercado_flutter/core/viewmodels/CRUDModelProducto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class AddProducto extends StatefulWidget {
   @override
@@ -13,7 +13,17 @@ class AddProducto extends StatefulWidget {
 
 class _AddProductoState extends State<AddProducto> {
   final _formKey = GlobalKey<FormState>();
-  var botonProducto;   
+  String _counter, _value = "0000";
+  Future _incrementCounter() async {
+    _counter = await FlutterBarcodeScanner.scanBarcode(
+        "#004297", "Cancel", true, ScanMode.BARCODE);
+    setState(() {
+      _value = _counter;
+      codigoProducto = _value;
+    });
+  }
+
+  var botonProducto;
   String codigoProducto;
   String nombreProducto;
   String cantidadProducto;
@@ -27,6 +37,7 @@ class _AddProductoState extends State<AddProducto> {
   @override
   Widget build(BuildContext context) {
     var productProvider = Provider.of<CRUDModelProducto>(context);
+    codigoProducto = _value;
     return Scaffold(
         appBar: AppBar(
           title: Text('Añadir Producto'),
@@ -49,21 +60,26 @@ class _AddProductoState extends State<AddProducto> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Codigo"),
-                                TextFormField(
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      fillColor: Colors.grey[300],
-                                      filled: true,
+                                Text("Codigo - Presione el boton para escanear"),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(_value),
                                     ),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'El campo debe estar llenado';
-                                      }
-                                    },
-                                    onSaved: (value) => codigoProducto = value),
+                                    Expanded(
+                                      flex: 2,
+                                      child: RaisedButton(
+                                        onPressed: _incrementCounter,
+                                        child: Text(
+                                          "Leer QR",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           )),
@@ -285,17 +301,21 @@ class _AddProductoState extends State<AddProducto> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("Proveedor"),                            
+                                Text("Proveedor"),
                                 StreamBuilder(
-                                    stream: Firestore.instance.collection('proveedor').snapshots(),
-                                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    stream: Firestore.instance
+                                        .collection('proveedor')
+                                        .snapshots(),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
                                       if (!snapshot.hasData)
                                         Center(
-                                          child: const CupertinoActivityIndicator(),
+                                          child:
+                                              const CupertinoActivityIndicator(),
                                         );
                                       return DropdownButtonFormField<String>(
                                         value: botonProducto,
-                                          hint: Text('Proveedor'),
+                                        hint: Text('Proveedor'),
                                         onChanged: (newValue) {
                                           setState(() {
                                             botonProducto = newValue;
@@ -308,14 +328,19 @@ class _AddProductoState extends State<AddProducto> {
                                           }
                                         },
                                         items: snapshot.data != null
-                                            ? snapshot.data.documents
-                                                .map((DocumentSnapshot document) {
-                                                return new DropdownMenuItem<String>(
-                                                    value: document.data['nombreProveedor'].toString(),
+                                            ? snapshot.data.documents.map(
+                                                (DocumentSnapshot document) {
+                                                return new DropdownMenuItem<
+                                                        String>(
+                                                    value: document
+                                                        .data['nombreProveedor']
+                                                        .toString(),
                                                     child: new Container(
                                                       //color: primaryColor,
                                                       child: new Text(
-                                                        document.data['nombreProveedor'].toString(),
+                                                        document.data[
+                                                                'nombreProveedor']
+                                                            .toString(),
                                                       ),
                                                     ));
                                               }).toList()
