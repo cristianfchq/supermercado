@@ -8,6 +8,8 @@ import 'package:supermercado_flutter/core/viewmodels/CRUDModelVentas.dart';
 import 'package:supermercado_flutter/ui/views/ventas/pdf_viewer.dart';
 import 'package:supermercado_flutter/ui/widgets/ventasCard.dart';
 import 'package:provider/provider.dart';
+import 'package:permission/permission.dart';
+//import 'package:simple_permissions/simple_permissions.dart';
 
 class ReadVentas extends StatefulWidget {
   @override
@@ -16,6 +18,11 @@ class ReadVentas extends StatefulWidget {
 
 class _ReadVentasState extends State<ReadVentas> {
   List<Ventas> products;
+  bool a0 = false, a1 = false, a2 = false, a3 = false, a4 = false, a5 = false, a6 = false, a7 = false, a8 = false;
+  bool i0 = false, i1 = false, i2 = false, i3 = false, i4 = false, i5 = false, i6 = false;
+  PermissionName permissionName = PermissionName.Storage;
+  String message = '';
+  var message2;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,21 @@ class _ReadVentasState extends State<ReadVentas> {
               Icons.picture_as_pdf,
               color: Colors.white,
             ),
-            onPressed: () => _generatePdfAndView(context),
+            onPressed: () {
+//              Permission.openSettings();
+//              getSinglePermissionStatus(context);
+              _getPermissionsStatus();
+              print("message2 ===>>> "+message2);
+//              if (message2.toString()=="PermissionName.Storage: PermissionStatus.notAgain") {
+                Permission.openSettings();
+//              }
+//              if (message2.toString()=="PermissionName.Storage: PermissionStatus.allow") {
+                _generatePdfAndView(context);
+//              }
+              print("--------------------------------");
+              print("permission is " + message2);
+
+            },
           ),
           SizedBox(width: 10),
         ],
@@ -65,7 +86,24 @@ class _ReadVentasState extends State<ReadVentas> {
   }
 
   _generatePdfAndView(context) async {
+//    PermissionName permissionName = PermissionName.Storage;
+//
+//    var permissions = await Permission.getPermissionsStatus([PermissionName.Storage]);
+//
+//    var permissionNames = await Permission.requestPermissions([PermissionName.Storage]);
+
+//    Permission.openSettings;
+//
+//    print(permissionName);
+//    print(permissions);
+//    print(permissionNames);
+
+
+
 //    List<Ventas> data = await _databaseService.list().first;
+
+
+
     final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
 
     pdf.addPage(
@@ -101,12 +139,13 @@ class _ReadVentasState extends State<ReadVentas> {
     final dir = (await getExternalStorageDirectory()).path;
     final String path = '$dir/reporte.pdf';
     final File file = File(path);
-    await file.writeAsBytes(pdf.save());
-//    file.writeAsBytesSync(bytes)
-
     print(dir);
     print(path);
     print(file);
+    await file.writeAsBytes(pdf.save());
+//    file.writeAsBytesSync(bytes)
+
+
 
 //    final Email email = Email(
 //      body: 'Email body',
@@ -124,5 +163,31 @@ class _ReadVentasState extends State<ReadVentas> {
         builder: (_) => PdfViewerPage(path: path),
       ),
     );
+  }
+
+
+  _getSinglePermissionStatus(context) async {
+    var permissionStatus = await Permission.getSinglePermissionStatus(permissionName);
+    setState(() {
+      message = permissionStatus.toString();
+    });
+  }
+
+  _getPermissionsStatus() async {
+    List<PermissionName> permissionNames = [];
+
+    if(a8==false) permissionNames.add(PermissionName.Storage);
+
+//    if(i6) permissionNames.add(PermissionName.Storage);
+    message = '';
+    List<Permissions> permissions = await Permission.getPermissionsStatus(permissionNames);
+    permissions.forEach((permission) {
+      message += '${permission.permissionName}: ${permission.permissionStatus}\n';
+      print("---------------");
+      print(message);
+    });
+    setState(() {
+      message2 = message;
+    });
   }
 }
